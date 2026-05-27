@@ -119,7 +119,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.7);
+    background: transparent;
     z-index: 9000;
     pointer-events: none;
   }
@@ -201,10 +201,11 @@
   }
   .tut-highlight {
     outline: 3px solid var(--brand) !important;
-    outline-offset: 3px !important;
+    outline-offset: 4px !important;
     border-radius: 8px !important;
-    position: relative;
-    z-index: 9050 !important;
+    position: relative !important;
+    z-index: 10000 !important;
+    box-shadow: 0 0 0 4px var(--brand), 0 0 0 9999px rgba(0,0,0,0.7) !important;
   }
 
   /* ── MODAL SUGERENCIAS ── */
@@ -548,6 +549,20 @@
   body.dark-mode .card-action   { border-left-color: #2D3148 !important; }
   body.dark-mode .status        { color: #9CA3AF !important; }
   body.dark-mode #footer-credit { color: #4B5563 !important; }
+
+  
+
+  /* ── TUT SPOTLIGHT ── */
+  #tut-spotlight {
+    display: none;
+    position: fixed;
+    border-radius: 8px;
+    border: 2px solid var(--brand-accent, #F5A623);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.55);
+    z-index: 1001;
+    pointer-events: none;
+    transition: all 0.25s ease;
+  }
 </style>
 </head>
 <body>
@@ -601,6 +616,7 @@
 
 <!-- TUTORIAL -->
 <div id="tutorial-overlay"></div>
+<div id="tut-spotlight"></div>
 <div id="tutorial-box" style="display:none;">
   <div class="tut-step" id="tut-step-label">Paso 1 de 6</div>
   <span class="tut-icon" id="tut-icon">🔍</span>
@@ -685,55 +701,55 @@ const P = [
 {"code": "278621925", "description": "MODULO EMERGENCIA LED DRIVER 100-170W 90MIN", "section": "MÓDULOS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/1jiyQtRDlWBeJQGZJZUHlP_D5EIdClZjL/view", "k": "MOD_EMERG_FOTO2"},
 {"code": "278622125", "description": "MODULO EMERGENCIA LED DRIVER 150-220W 90MIN", "section": "MÓDULOS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/1jiyQtRDlWBeJQGZJZUHlP_D5EIdClZjL/view", "k": "MOD_EMERG_FOTO2"},
 {"code": "278621725", "description": "MODULO EMERGENCIA TUBOS/AMP LED 5-20W 1-3 H", "section": "MÓDULOS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/19DZx2dNQiO-rsAIEck_vQANQMqmPeWc8/view", "k": "MOD_EMERG_FOTO3"},
-{"code": "278604725", "description": "FOCO RIEL SPOTY BLANCO, BASE GU10, CUERPO ALUMINIO, IP20, 52x85x130mm (LÁMPARA NO INCLUIDA)", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1dP4q2b6FsHilkIcBMNnyDffpxdb0WxPl/view", "k": "FOCO_RIEL"},
-{"code": "278604925", "description": "FOCO RIEL SPOTY NEGRO, BASE GU10, CUERPO ALUMINIO, IP20, 52x85x130mm (LÁMPARA NO INCLUIDA)", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1dP4q2b6FsHilkIcBMNnyDffpxdb0WxPl/view", "k": "FOCO_RIEL"},
-{"code": "209006225", "description": "RIEL ALUMINIO ENERGIZADO MONOFÁSICO NEGRO, 1 METRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1g_QoZBP4ejPj2MdxdB10-PO4b1ZyV_aK/view", "k": "RIEL_ACCESORIO"},
-{"code": "209006125", "description": "RIEL ALUMINIO ENERGIZADO MONOFÁSICO BLANCO, 1 METRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1g_QoZBP4ejPj2MdxdB10-PO4b1ZyV_aK/view", "k": "RIEL_ACCESORIO"},
-{"code": "209006425", "description": "ACCESORIO PARA FOCO RIEL LINEAL NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
-{"code": "209007025", "description": "ACCESORIO PARA FOCO RIEL LINEAL BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
+{"code": "278604725", "description": "FOCO RIEL ALUMINIO 1xGU10 BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1dP4q2b6FsHilkIcBMNnyDffpxdb0WxPl/view", "k": "FOCO_RIEL"},
+{"code": "278604925", "description": "FOCO RIEL ALUMINIO 1xGU10 NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1dP4q2b6FsHilkIcBMNnyDffpxdb0WxPl/view", "k": "FOCO_RIEL"},
+{"code": "209006225", "description": "ACCESORIO RIEL ALUMINIO 1 MT NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1g_QoZBP4ejPj2MdxdB10-PO4b1ZyV_aK/view", "k": "RIEL_ACCESORIO"},
+{"code": "209006125", "description": "ACCESORIO RIEL ALUMINIO 1 MT BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1g_QoZBP4ejPj2MdxdB10-PO4b1ZyV_aK/view", "k": "RIEL_ACCESORIO"},
+{"code": "209006425", "description": "ACCESORIO FOCO RIEL LINEAL NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
+{"code": "209007025", "description": "ACC UNION LINEAL PARA FOCO RIEL BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
 {"code": "209007125", "description": "ACCESORIO PARA FOCO RIEL L BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
 {"code": "209006525", "description": "ACCESORIO PARA FOCO RIEL L NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
-{"code": "209006625", "description": "ACCESORIO PARA FOCO RIEL T IZQUIERDA NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
-{"code": "209007225", "description": "ACCESORIO PARA FOCO RIEL T IZQUIERDA BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
-{"code": "209006725", "description": "ACCESORIO PARA FOCO RIEL T DERECHA NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
-{"code": "209007325", "description": "ACCESORIO PARA FOCO RIEL T DERECHA BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
+{"code": "209006625", "description": "ACCESORIO PARA FOCO RIEL T NEGRO IZQ", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
+{"code": "209007225", "description": "ACCESORIO PARA FOCO RIEL T IZQUIERDA BL", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
+{"code": "209006725", "description": "ACCESORIO PARA FOCO RIEL T NEGRO DER", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
+{"code": "209007325", "description": "ACCESORIO PARA FOCO RIEL T DERECHA BL", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
 {"code": "209006825", "description": "ACCESORIO PARA FOCO RIEL X NEGRO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
 {"code": "209007425", "description": "ACCESORIO PARA FOCO RIEL X BLANCO", "section": "FOCO RIEL", "ficha": "https://drive.google.com/file/d/1q4zPCibit12fjjF8ut8lxchf1i4AeWys/view", "k": "RIEL_UNIONES"},
-{"code": "269504025", "description": "PLAIN PLAFÓN LED OVALADO 18W 1800LM 4000K IP65 235x115mm BLANCO, POLICARBONATO", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1-r5d-qIEkqk5nduNYIdux_IvU0gvrOE4/view", "k": "PLAIN"},
-{"code": "209003425", "description": "PLAIN PLAFÓN LED CIRCULAR 20W 1900LM 4000K IP65 Ø182x48mm BLANCO, POLICARBONATO", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1-r5d-qIEkqk5nduNYIdux_IvU0gvrOE4/view", "k": "PLAIN"},
-{"code": "209003125", "description": "PLAIN REJILLA PLAFÓN LED OVALADO 8W 800LM 4000K IP65 235x48mm NEGRO, ALUMINIO", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1z0B8yI9mkySAC5WRda7DSFB_d21kfZyD/view", "k": "PLAIN_REJILLA"},
-{"code": "209003325", "description": "PLAIN REJILLA PLAFÓN LED CIRCULAR 15W 1500LM 4000K IP65 Ø182x48mm NEGRO, ALUMINIO", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1z0B8yI9mkySAC5WRda7DSFB_d21kfZyD/view", "k": "PLAIN_REJILLA"},
-{"code": "209002625", "description": "BKB CIRCULAR PLAFÓN LED CIRCULAR SOBREPONER 15W 600LM 4000K IP44, ALUMINIO FUNDIDO, CUBIERTA VIDRIO, 250x250x106mm", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1JcyDssdA9LzqA_nCSuC8rpSnKUtrQ0a9/view", "k": "BKB_CIRCULAR"},
-{"code": "209002425", "description": "BKB OVALADO PLAFÓN LED OVALADO SOBREPONER 15W 600LM 4000K IP44, ALUMINIO FUNDIDO, CUBIERTA VIDRIO, 280x165x110mm", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/17NybBOwyinkYmxHAIdpEvLwEQDBJYsTx/view", "k": "BKB_OVALADO"},
-{"code": "269503725", "description": "BKB OVALADO PLAFÓN LED OVALADO EMERGENCIA 10W 700LM 3000K IP65, ALUMINIO FUNDIDO, 275x155x110mm, AUTONOMÍA 1.5 HRS", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/17NybBOwyinkYmxHAIdpEvLwEQDBJYsTx/view", "k": "BKB_OVALADO"},
-{"code": "269503925", "description": "BKB OVALADO PLAFÓN LED OVALADO EMERGENCIA 10W 700LM 4000K IP65, ALUMINIO FUNDIDO, 275x155x110mm, AUTONOMÍA 1.5 HRS", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/17NybBOwyinkYmxHAIdpEvLwEQDBJYsTx/view", "k": "BKB_OVALADO"},
-{"code": "278716425", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 6W 480LM Ø118mm, ALUMINIO, DRIVER EXTERNO, REGULABLE 3-4-6K, SIN EMERGENCIA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278716625", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 12W 960LM Ø168mm, ALUMINIO, DRIVER EXTERNO, REGULABLE 3-4-6K, SIN EMERGENCIA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278716825", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 18W 1440LM Ø222mm, ALUMINIO, DRIVER EXTERNO, REGULABLE 3-4-6K, SIN EMERGENCIA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278717025", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 24W 1920LM Ø294mm, ALUMINIO, DRIVER EXTERNO, REGULABLE 3-4-6K, SIN EMERGENCIA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278717225", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 6W 480LM Ø118mm, ALUMINIO, EMERGENCIA 1.5 HRS, REGULABLE 3-4-6K", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278717425", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 12W 960LM Ø168mm, ALUMINIO, EMERGENCIA 1.5 HRS, REGULABLE 3-4-6K", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278717625", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 18W 1440LM Ø222mm, ALUMINIO, EMERGENCIA 1.5 HRS, REGULABLE 3-4-6K", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "278717825", "description": "PLATÓN PRO EMBUTIDO IP40 CCT 24W 1920LM Ø294mm, ALUMINIO, EMERGENCIA 1.5 HRS, REGULABLE 3-4-6K", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "1278616025", "description": "FOCO NEW iSPOT MINI BLANCO 3W 180LM 3000K COB CRI>90 IP65/20 Ø35mm EMBUTIDO INTERIOR, 50.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1tks560-W8tcuNjySCpwAGidZ2VNCByFD/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "1278616125", "description": "FOCO NEW iSPOT MINI NEGRO 3W 150LM 3000K COB CRI>90 IP65/20 Ø35mm EMBUTIDO INTERIOR, 50.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1tks560-W8tcuNjySCpwAGidZ2VNCByFD/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "1278616225", "description": "FOCO NEW iSPOT BLANCO CON ANILLO 8W 680LM 3000K COB CRI>90 IP65 Ø92mm EMBUTIDO, DALI, 50.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "1278616325", "description": "FOCO NEW iSPOT NEGRO CON ANILLO 8W 680LM 3000K COB CRI>90 IP65 Ø92mm EMBUTIDO, DALI, 50.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "1278616425", "description": "FOCO NEW iSPOT BLANCO SIN ANILLO 8W 680LM 3000K COB CRI>90 IP65 Ø92mm EMBUTIDO, DALI, 50.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "1278616525", "description": "FOCO NEW iSPOT NEGRO SIN ANILLO 8W 680LM 3000K COB CRI>90 IP65 Ø92mm EMBUTIDO, DALI, 50.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "8525425", "description": "GALA EMBUTIDO ORIENTABLE GU10 MAX50W BLANCO, CUERPO ACERO PINTURA EPÓXICA, 85x45mm (LÁMPARA NO INCLUIDA)", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1_TEQiRtaFd0LzfqfjY2jBT5JXVaymI0C/view", "k": "GALA_ORIENTABLE"},
-{"code": "1278620025", "description": "ECOLEX FOCO LED EMBUTIDO 10W 1088LM 4000K DIMMABLE IP40 CRI93 IK07, Ø100x34mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278620125", "description": "ECOLEX FOCO LED EMBUTIDO 10W 1033LM 3000K DIMMABLE IP40 CRI93 IK07, Ø100x34mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278610025", "description": "ECOLEX FOCO LED EMBUTIDO 10W 1040LM 4000K DIMMABLE IP40 CRI93, Ø164x45mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278610125", "description": "ECOLEX FOCO LED EMBUTIDO 10W 980LM 3000K DIMMABLE IP40 CRI93, Ø164x45mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278610225", "description": "ECOLEX FOCO LED EMBUTIDO 12W 1380LM 4000K DIMMABLE IP40 CRI93, Ø192x50mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278610525", "description": "ECOLEX FOCO LED EMBUTIDO 12W 1300LM 3000K DIMMABLE IP40 CRI93, Ø192x50mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278610325", "description": "ECOLEX FOCO LED EMBUTIDO 20W 2070LM 3000K DIMMABLE IP40 CRI93, Ø220x60mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278605425", "description": "ECOLEX FOCO LED EMBUTIDO 20W 2190LM 4000K DIMMABLE IP40 CRI93, Ø220x60mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278610725", "description": "ECOLEX FOCO LED EMBUTIDO 23W 2190LM 3000K DIMMABLE IP40 CRI93 CON EMERGENCIA, Ø220x60mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278612125", "description": "ECOLEX FOCO LED EMBUTIDO 23W 2190LM 4000K DIMMABLE IP40 CRI93 CON EMERGENCIA, Ø220x60mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278605825", "description": "ECOLEX FOCO LED EMBUTIDO 32W 3320LM 4000K DIMMABLE IP40 CRI93, Ø245x60mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
-{"code": "1278605725", "description": "ECOLEX FOCO LED EMBUTIDO 32W 3135LM 3000K DIMMABLE IP40 CRI93, Ø245x60mm, ALUMINIO, 40.000 HRS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "269504025", "description": "PLAFON LED 18W OVAL 1800lm IP65 4K 240V", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1-r5d-qIEkqk5nduNYIdux_IvU0gvrOE4/view", "k": "PLAIN"},
+{"code": "209003425", "description": "PLAFON LED 20W CIRC 1780lm IP65 4K 240V", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1-r5d-qIEkqk5nduNYIdux_IvU0gvrOE4/view", "k": "PLAIN"},
+{"code": "209003125", "description": "PLAFON LED 8W OVAL NG 800lm IP65 4K 240V", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1z0B8yI9mkySAC5WRda7DSFB_d21kfZyD/view", "k": "PLAIN_REJILLA"},
+{"code": "209003325", "description": "PLAFON LED 15W CIRC NG 1500lm IP65 4K", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1z0B8yI9mkySAC5WRda7DSFB_d21kfZyD/view", "k": "PLAIN_REJILLA"},
+{"code": "209002625", "description": "PLAFON RED TORTUGA 15W LED 4K IP44 BL", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/1JcyDssdA9LzqA_nCSuC8rpSnKUtrQ0a9/view", "k": "BKB_CIRCULAR"},
+{"code": "209002425", "description": "PLAFON LED OVAL TORTUGA 15W 4K IP44 BL", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/17NybBOwyinkYmxHAIdpEvLwEQDBJYsTx/view", "k": "BKB_OVALADO"},
+{"code": "269503725", "description": "PLAFON LED 10W OVAL BL 700lm IP65 3K + E", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/17NybBOwyinkYmxHAIdpEvLwEQDBJYsTx/view", "k": "BKB_OVALADO"},
+{"code": "269503925", "description": "PLAFON LED 10W OVAL BL 700lm IP65 4K + E", "section": "TORTUGAS LED", "ficha": "https://drive.google.com/file/d/17NybBOwyinkYmxHAIdpEvLwEQDBJYsTx/view", "k": "BKB_OVALADO"},
+{"code": "278716425", "description": "FOCO LED EMB 6W 3-4-6K IP40 118/105mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278716625", "description": "FOCO LED EMB 12W 3-4-6K IP40 168/155mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278716825", "description": "FOCO LED EMB 18W 3-4-6K IP40 222/205mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278717025", "description": "FOCO LED EMB 24W 3-4-6K IP40 294/280mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278717225", "description": "FOCO LED EMB 6W 3-4-6K IP40 118/EMERG", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278717425", "description": "FOCO LED EMB 12W 3-4-6K IP40 168/EMERG", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278717625", "description": "FOCO LED EMB 18W 3-4-6K IP40 222/EMERG", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "278717825", "description": "FOCO LED EMB 24W 3-4-6K IP40 294/EMERG", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1YTV3cjEK4O32E50Mg62_mPbthbJhR_vZ/view", "k": "PLATON_IP44_CUADRADO"},
+{"code": "1278616025", "description": "FOCO LED EMB 3W 3K BL 165LM IP65 35X40mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1tks560-W8tcuNjySCpwAGidZ2VNCByFD/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "1278616125", "description": "FOCO LED EMB 3W 3K NG 165LM IP65 35X40mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1tks560-W8tcuNjySCpwAGidZ2VNCByFD/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "1278616225", "description": "FOCO LED EMB 8W 3K BL 680LM IP65 92X97mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "1278616325", "description": "FOCO LED EMB 8W 3K NG 680LM IP65 92X97mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "1278616425", "description": "FOCO LED EMB 8W 3K DALI BL IP65 92X97mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "1278616525", "description": "FOCO LED EMB 8W 3K DALI NG IP65 92X97mm", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ri1n9RcwOE660p-40jVFHWCIsFWgDXtQ/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "8525425", "description": "FOCO EMB DICR DIRIG D-85 BCO DARLUX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1_TEQiRtaFd0LzfqfjY2jBT5JXVaymI0C/view", "k": "GALA_ORIENTABLE"},
+{"code": "1278620025", "description": "FOCO LED EMB 10W BL 100mm DIM 4K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278620125", "description": "FOCO LED EMB 10W BL 100mm DIM 3K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278610025", "description": "FOCO LED EMB 10W BL 165mm DIM 4K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278610125", "description": "FOCO LED EMB 10W BL 165mm DIM 3K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278610225", "description": "FOCO LED EMB 14W BL 193mm DIM 4K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278610525", "description": "FOCO LED EMB 14W BL 193mm DIM 3K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278610325", "description": "FOCO LED EMB 23W BL 220mm DIM 3K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278605425", "description": "FOCO LED EMB 23W BL 220mm DIM 4K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278610725", "description": "FOCO LED EMB 23W BL 220mm DIM 3K EMERG", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278612125", "description": "FOCO LED EMB 23W BL 220mm 4000K EMER", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278605825", "description": "FOCO LED EMB 35W BL 245mm DIM 4K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
+{"code": "1278605725", "description": "FOCO LED EMB 35W BL 245mm DIM 3K ECOLEX", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1ZzMKBq6zRPH4_w1i096SDdm2oR33jYEX/view", "k": "ECOLEX"},
 {"code": "", "description": "GALA RETRAIDO FOCO LED EMBUTIDO ORIENTABLE GU10, ACERO PINTURA EPÓXICA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1eD-4f58507rzaE5uT7s6X9QpVfdP6VlN/view", "k": "GALA_O"},
 {"code": "", "description": "GALA RETRAIDO TRIMLESS FOCO LED EMBUTIDO ORIENTABLE GU10 SIN MARCO, ACERO", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1QRwIVmRo25CuypjT0rIKOrrD84vVXxce/view", "k": "GALA_O"},
 {"code": "", "description": "GALA SQUARE FOCO LED EMBUTIDO CUADRADO ORIENTABLE GU10, ACERO PINTURA EPÓXICA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1Qar6AOWiCr1hzLD4ceu3bdMdjmqvyBaN/view", "k": "TULIP"},
@@ -745,78 +761,78 @@ const P = [
 {"code": "", "description": "GALA FIJO FOCO LED EMBUTIDO FIJO GU10, ACERO PINTURA EPÓXICA", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1TD1E_RYTuYdIAG4LDMgGh0OUPtkvCKzl/view", "k": "GALA_FIJO"},
 {"code": "", "description": "PLATÓN EMBUTIDO IP44 REDONDO LED, ALUMINIO, IP44, APTO ZONAS HÚMEDAS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/117BecvgX_XOWj638Dtcs_g9MlyIzSyXy/view", "k": "PLATON_IP44_CUADRADO"},
 {"code": "", "description": "PLATÓN EMBUTIDO IP44 CUADRADO LED, ALUMINIO, IP44, APTO ZONAS HÚMEDAS", "section": "FOCOS EMBUTIDOS", "ficha": "https://drive.google.com/file/d/1vtE1Sp62rWcDHIBwiMDrZmGkb_bCY8bN/view", "k": "PLATON_IP44_CUADRADO"},
-{"code": "229620025", "description": "CINTA LED 14.4W/M 5MT 2700K IP20 24V INTERIOR, 60 LEDs/M, CRI90-95, 4150LM", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "229620225", "description": "CINTA LED 14.4W/M 5MT 4200K IP20 24V INTERIOR, 60 LEDs/M, CRI90-95, 4150LM", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "229620425", "description": "CINTA LED 14.4W/M 5MT 2700K IP66 24V EXTERIOR, 60 LEDs/M, CRI90-95, 4150LM", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "229620625", "description": "CINTA LED 14.4W/M 5MT 6500K IP66 24V EXTERIOR, 60 LEDs/M, CRI90-95, 4150LM", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "229620825", "description": "CINTA LED 14.4W/M 5MT 4200K IP66 24V EXTERIOR, 60 LEDs/M, CRI90-95, 4150LM", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "278431425", "description": "CINTA LED 6W/M 5MT 60 LED 2700K IP20 24V INTERIOR, CRI90-95", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "278431625", "description": "CINTA LED 6W/M 5MT 60 LED 4000K IP20 24V INTERIOR, CRI90-95", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "278431825", "description": "CINTA LED 6W/M 5MT 60 LED 2700K IP66 24V EXTERIOR, CRI90-95", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
-{"code": "278432025", "description": "CINTA LED 6W/M 5MT 60 LED 4000K IP66 24V EXTERIOR, CRI90-95", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "229620025", "description": "CINTA LED 14.4W/M 5MT 2700K IP20 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "229620225", "description": "CINTA LED 14.4W/M 5MT 4200K IP20 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "229620425", "description": "CINTA LED 14.4W/M 5MT 2700K IP66 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "229620625", "description": "CINTA LED 14.4W/M 5MT 6500K IP66 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "229620825", "description": "CINTA LED 14.4W/M 5MT 4200K IP66 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "278431425", "description": "CINTA LED 6W/M 5MT 60 LED 2700K IP20 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "278431625", "description": "CINTA LED 6W/M 5MT 60 LED 4000K IP20 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "278431825", "description": "CINTA LED 6W/M 5MT 60 LED 2700K IP66 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
+{"code": "278432025", "description": "CINTA LED 6W/M 5MT 60 LED 4000K IP66 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1wgokACol8uI3HnS3wZMrOJDOTvNiwdWL/view", "k": "CINTAS_LED"},
 {"code": "", "description": "CINTAS LED RGB-TUNEABLE MULTICOLOR, CONTROL REMOTO, IP20/IP66", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1oqnqcJqd8JJhosHHxzvqkNURs_qzm43r/view", "k": "CINTAS_RGB"},
 {"code": "", "description": "CINTAS LED COB ALTA DENSIDAD, DIFUSOR UNIFORME, 24V, IP20/IP66", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1E6fuBP5Uip-uiAYlqPvcKqzcJUZFVNQ0/view", "k": "CINTAS_COB"},
 {"code": "", "description": "ACCESORIOS CINTAS LED UNIONES Y TAPAS, PARA PERFILES DARLUX", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1LHluQ01gXmOMlRrRd9ul39XLlRpnu4xC/view", "k": "ACCESORIOS_CINTAS"},
-{"code": "229610025", "description": "TRANSFORMADOR CINTAS LED 24V 150W IP67, MEAN WELL", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
-{"code": "229610225", "description": "TRANSFORMADOR CINTAS LED 24V 35W IP67, MEAN WELL, 14.5x3.5x3cm", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
-{"code": "229610425", "description": "TRANSFORMADOR CINTAS LED 24V 60W IP67, MEAN WELL, 16x4x3cm", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
-{"code": "229610625", "description": "TRANSFORMADOR CINTAS LED 24V 35W IP20, MEAN WELL, 10x8x3cm", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
-{"code": "229610825", "description": "TRANSFORMADOR CINTAS LED 24V 75W IP20, MEAN WELL, 9.5x9x5cm", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
-{"code": "229611025", "description": "TRANSFORMADOR CINTAS LED 24V 150W IP20, MEAN WELL", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
+{"code": "229610025", "description": "TRANSF CINTA LED 100-240V 24V 150W IP67", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
+{"code": "229610225", "description": "TRANSF CINTA LED IP67 35W 90 264VAC 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
+{"code": "229610425", "description": "TRANSF CINTA LED IP67 60W 90 264VAC 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
+{"code": "229610625", "description": "TRANSF CINTA LED IP20 35W 85 264VAC 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
+{"code": "229610825", "description": "TRANSF CINTA LED IP20 75W 85 264VAC 24V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
+{"code": "229611025", "description": "TRANSF CINTA LED IP20 150W 24V 170 264V", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/15qSuffFxGjEan5jomIffk2jxJRq8DRg6/view", "k": "CINTAS_COB"},
 {"code": "", "description": "CONTROL REMOTO PARA CINTAS LED RGB Y TUNEABLE, INALÁMBRICO", "section": "CINTAS LED", "ficha": "https://drive.google.com/file/d/1dYcngnf0NbipZsjbjmr5rf96i82Hl1fr/view", "k": "CONTROL_REMOTO"},
-{"code": "259586225", "description": "PANEL LED MERCURY PRO CUADRADO 30/36/40W 3000-6000LM 603x603x30mm EMBUTIDO BACKLIGHT CCT REGULABLE, IP20, 40.000 HRS", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259587025", "description": "PANEL LED MERCURY PRO CUADRADO 30/36/40W CON EMERGENCIA 1.5-3H 603x603x30mm BACKLIGHT CCT REGULABLE", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259586425", "description": "PANEL LED MERCURY PRO RECTANGULAR 25/30/36W 1213x150x30mm EMBUTIDO BACKLIGHT CCT REGULABLE, IP20, 40.000 HRS", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259587225", "description": "PANEL LED MERCURY PRO RECTANGULAR 25/30/36W CON EMERGENCIA 1.5-3H 1213x150x30mm BACKLIGHT CCT REGULABLE", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259586625", "description": "PANEL LED MERCURY PRO RECTANGULAR MEDIANO 30/36/40W 1213x303x30mm EMBUTIDO BACKLIGHT CCT REGULABLE, IP20, 40.000 HRS", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259587425", "description": "PANEL LED MERCURY PRO RECTANGULAR MEDIANO 30/36/40W CON EMERGENCIA 1213x303x30mm BACKLIGHT CCT REGULABLE", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259586825", "description": "PANEL LED MERCURY PRO RECTANGULAR GRANDE 60/70/80W 1213x603x30mm EMBUTIDO BACKLIGHT CCT REGULABLE, IP20, 40.000 HRS", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "259587625", "description": "PANEL LED MERCURY PRO RECTANGULAR GRANDE 60/70/80W CON EMERGENCIA 1213x603x30mm BACKLIGHT CCT REGULABLE", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "229633825", "description": "ACCESORIO MONTAJE PARA SOBREPONER PANEL LED CUADRADO ALUMINIO BLANCO 608x608x65mm", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
-{"code": "229634425", "description": "ACCESORIO MONTAJE PARA SOBREPONER PANEL LED RECTANGULAR PEQUEÑO ALUMINIO BLANCO 1218x155x70mm", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
-{"code": "229634025", "description": "ACCESORIO MONTAJE PARA SOBREPONER PANEL LED RECTANGULAR MEDIANO ALUMINIO BLANCO 1218x308x65mm", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
-{"code": "229634225", "description": "ACCESORIO MONTAJE PARA SOBREPONER PANEL LED RECTANGULAR GRANDE ALUMINIO BLANCO 1218x608x65mm", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
-{"code": "278604525", "description": "ACCESORIO PARA COLGAR CON PIOLA 2 METROS 6 UNIDADES, PARA PANEL LED MERCURY PRO", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
-{"code": "66171325", "description": "LUMINARIA DE EMERGENCIA SPOTLIGHT 2 LUCES 12W 650LM/FOCO IP65 5000K, BATERÍA 12V 2.8Ah Ni-Cad, AUTONOMÍA 180 MIN", "section": "LUMINARIAS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/14CFZnodU1Iao7hluUR-0RLeix52jjK1e/view", "k": "MODULO_TUBOS"},
-{"code": "278626525", "description": "LUMINARIA EMERGENCIA SAFEWAY LED 3.8W 160LM 6500K IP54, ABS+PC ULTRADELGADO, BATERÍA NI-MH 1500mAh, AUTONOMÍA 180 MIN", "section": "LUMINARIAS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/1R7Vs_kNwkoKOT8bNBRNQoF0lPmpdQU_G/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "278626625", "description": "KIT 6 SEÑALÉTICAS DE EMERGENCIA SAFEWAY, COMPATIBLE CON LUMINARIA 278626525, PLACA ACRÍLICO TRANSPARENTE", "section": "LUMINARIAS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/1hzUxUrm8-H_DxbW6p70UVplFA38PKFQy/view", "k": "SAFEWAY_SEÑALETICA"},
-{"code": "209004625", "description": "APLIQUE RAY LED 6W 150LM 3000K IP54, ALUMINIO FUNDIDO DIFUSOR VIDRIO, 80x80x80mm BLANCO, 35.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
-{"code": "209004825", "description": "APLIQUE RAY LED 6W 150LM 3000K IP54, ALUMINIO FUNDIDO DIFUSOR VIDRIO, 80x80x80mm GRIS, 35.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
-{"code": "1278711225", "description": "APLIQUE RAY LED 6W 150LM 3000K IP54, ALUMINIO FUNDIDO DIFUSOR VIDRIO, 80x80x80mm NEGRO, 35.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
-{"code": "209005525", "description": "APLIQUE RAY LED 7W 315LM 3000K IP54, ALUMINIO FUNDIDO DIFUSOR VIDRIO, 100x100x100mm GRIS, 35.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
-{"code": "209004125", "description": "APLIQUE CLARISSE LED 18W 1140LM 3000K IP65 BIDIRECCIONAL NEGRO, ALUMINIO, 220x90x123mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "209004325", "description": "APLIQUE CLARISSE LED 18W 1140LM 4000K IP65 BIDIRECCIONAL NEGRO, ALUMINIO, 220x90x123mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "209004525", "description": "APLIQUE CLARISSE LED 18W 1140LM 3000K IP65 BIDIRECCIONAL BLANCO, ALUMINIO, 220x90x123mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "209004725", "description": "APLIQUE CLARISSE LED 18W 1140LM 4000K IP65 BIDIRECCIONAL BLANCO, ALUMINIO, 220x90x123mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "1278715025", "description": "APLIQUE CLARISSE LED 12W 1080LM 3000K IP65 BIDIRECCIONAL NEGRO, ALUMINIO, 180x65x71.5mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "1278715225", "description": "APLIQUE CLARISSE LED 12W 1080LM 4000K IP65 BIDIRECCIONAL NEGRO, ALUMINIO, 180x65x71.5mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "1278715425", "description": "APLIQUE CLARISSE LED 12W 1080LM 3000K IP65 BIDIRECCIONAL BLANCO, ALUMINIO, 180x65x71.5mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
-{"code": "1278715625", "description": "APLIQUE CLARISSE LED 12W 1080LM 4000K IP65 BIDIRECCIONAL BLANCO, ALUMINIO, 180x65x71.5mm, 30.000 HRS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "259586225", "description": "PANEL LED 30/36/40W CCT 60X60 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259587025", "description": "PANEL LED 30/36/40W+E 60X60 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259586425", "description": "PANEL LED 25/30/36W CCT 120X15 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259587225", "description": "PANEL LED 25/30/36W+E 120X15 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259586625", "description": "PANEL LED 30/36/40W CCT 120X30 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259587425", "description": "PANEL LED 30/36/40W+E 120X30 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259586825", "description": "PANEL LED 60/70/80W CCT 120X60 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "259587625", "description": "PANEL LED 60/70/80W+E 120X60 IP20 CRI80", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/1aIsPwisdS44jiTUVnkoybzmMi6aczp48/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "229633825", "description": "ACC P/SOBREPONER PANEL LED AL BL 60x60", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
+{"code": "229634425", "description": "ACC P/SOBREPONER PANEL LED AL BL 120x15", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
+{"code": "229634025", "description": "ACC P/SOBREPONER PANEL LED AL BL 120x30", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
+{"code": "229634225", "description": "ACC P/SOBREPONER PANEL LED AL BL 120x60", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
+{"code": "278604525", "description": "ACC P/COLGAR (PIOLAS) 6 UNIDADES 2 METROS", "section": "PANEL LED", "ficha": "https://drive.google.com/file/d/17PQgGdhmG7rLXwqCVflpb9x5nGFcGc8Z/view", "k": "ACCESORIOS_PANEL"},
+{"code": "66171325", "description": "EQUIPO DE EMERGENCIA LED 2X6W 3HRS IP65", "section": "LUMINARIAS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/14CFZnodU1Iao7hluUR-0RLeix52jjK1e/view", "k": "MODULO_TUBOS"},
+{"code": "278626525", "description": "EQ EMERG LED 3.8W IP54 3HORAS SAFEWAY", "section": "LUMINARIAS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/1R7Vs_kNwkoKOT8bNBRNQoF0lPmpdQU_G/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "278626625", "description": "KIT ETIQUETAS P/SAFEWAY MAS PLACA", "section": "LUMINARIAS DE EMERGENCIA", "ficha": "https://drive.google.com/file/d/1hzUxUrm8-H_DxbW6p70UVplFA38PKFQy/view", "k": "SAFEWAY_SEÑALETICA"},
+{"code": "209004625", "description": "APLIQUE LED CUAD 6W 3K LUZ ASC 80mm BL", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
+{"code": "209004825", "description": "APLIQUE LED CUAD 6W 3K LUZ ASC 80mm GRIS", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
+{"code": "1278711225", "description": "APLIQ LED CUAD 6W 3K BIDIREX IP54 NEGRO", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
+{"code": "209005525", "description": "APLIQUE LED CUAD 7W 3K DIR/IND IP54 GR", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1pnAR5O8-V8Om2Er8VMC_4AwU0mO7OdQJ/view", "k": "RAY"},
+{"code": "209004125", "description": "APLIQ LED 18W EXT LUZ DIR/IND IP65 3K NG", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "209004325", "description": "APLIQ LED 18W EXT LUZ DIR/IND IP65 4K NG", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "209004525", "description": "APLIQ LED 18W EXT LUZ DIR/IND IP65 3K BL", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "209004725", "description": "APLIQ LED 18W EXT LUZ DIR/IND IP65 4K BL", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "1278715025", "description": "APLIQ LED 12W DIR/IND IP65 3K NG 180X65", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "1278715225", "description": "APLIQ LED 12W DIR/IND IP65 4K NG 180X65", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "1278715425", "description": "APLIQ LED 12W DIR/IND IP65 3K BL 180X65", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
+{"code": "1278715625", "description": "APLIQ LED 12W DIR/IND IP65 4K BL 180X65", "section": "APLIQUES", "ficha": "https://drive.google.com/file/d/1H1OLExDHdKrrRkNm384RshkyCBGn6Mcp/view", "k": "CLARISSE"},
 {"code": "", "description": "FAROL BOLLARD SOLARE JARDÍN LED SOLAR, ALUMINIO, IP65, EXTERIOR", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1s9-J2evkR7P7ByYTGOGqU5S72RQ9Js0F/view", "k": "FAROL_BOLLARD"},
-{"code": "278300325", "description": "FAROL BOLLAR JARDÍN LED 12W 720LM 4000K IP65 IK08 CRI80-89, ALUMINIO, 172x650x190mm", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1ueI3bP5Zya7QcjvPFAomWI6tQsDh9d4j/view", "k": "FAROL_BOLLARD"},
-{"code": "278300525", "description": "FAROL BOLLAR JARDÍN LED 12W 720LM 3000K IP65 IK08 CRI80-89, ALUMINIO, 172x650x190mm", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1ueI3bP5Zya7QcjvPFAomWI6tQsDh9d4j/view", "k": "FAROL_BOLLARD"},
-{"code": "1278711625", "description": "FAROL DECOSOL GARDEN LED SOLAR 3W 200LM 4000K IP65, ALUMINIO+PANEL SOLAR, 180x18x600mm, SENSOR MOVIMIENTO", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/10pmtQVvDQxwC-ItgV6f1nnqyOCOi7bWv/view", "k": "FAROL_BOLLARD"},
-{"code": "1278712025", "description": "FAROL DECOSOL GARDEN LED SOLAR 3W 200LM 3000K IP65, ALUMINIO+PANEL SOLAR, 180x180x600mm, SENSOR MOVIMIENTO", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/10pmtQVvDQxwC-ItgV6f1nnqyOCOi7bWv/view", "k": "FAROL_BOLLARD"},
-{"code": "1278711425", "description": "DECOSOL GARDEN PARED LED SOLAR 3W 200LM 4000K IP65, ALUMINIO+PANEL SOLAR, 180x195x72mm, SENSOR MOVIMIENTO", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1HpNQj_K2zVrSc3X-eMUv6CJDzaPb8HiB/view", "k": "FAROL_BOLLARD"},
-{"code": "1278711825", "description": "DECOSOL GARDEN PARED LED SOLAR 3W 200LM 3000K IP65, ALUMINIO+PANEL SOLAR, 180x195x72mm, SENSOR MOVIMIENTO", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1HpNQj_K2zVrSc3X-eMUv6CJDzaPb8HiB/view", "k": "FAROL_BOLLARD"},
-{"code": "1278618225", "description": "REFLECTOR INDUSTRIAL LED SUNSET UFO 100W 14000LM 4000K IP65 IK08, LENTE 60-90-120°, 249x124mm, 50.000 HRS", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
-{"code": "1278615825", "description": "REFLECTOR INDUSTRIAL LED SUNSET UFO 150W 21000LM 4000K IP65 IK08, LENTE 60-90-120°, 286x126mm, 50.000 HRS", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
-{"code": "1278618025", "description": "REFLECTOR INDUSTRIAL LED SUNSET UFO 200W 28000LM 4000K IP65 IK08, LENTE 60-90-120°, 328x132mm, 50.000 HRS", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
-{"code": "1278615625", "description": "REFLECTOR INDUSTRIAL LED SUNSET UFO 100W 14000LM 6000K IP65 IK08, LENTE 60-90-120°, 249x124mm, 50.000 HRS", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
-{"code": "1278615225", "description": "REFLECTOR INDUSTRIAL LED SUNSET UFO 150W 21000LM 6000K IP65 IK08, LENTE 60-90-120°, 286x126mm, 50.000 HRS", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
-{"code": "1278615425", "description": "REFLECTOR INDUSTRIAL LED SUNSET UFO 200W 28000LM 6000K IP65 IK08, LENTE 60-90-120°, 328x132mm, 50.000 HRS", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
-{"code": "2259576425", "description": "NEW ECOLUX LED HERMÉTICO 18W 2700LM 4000K IP65 590x72x61mm, POLICARBONATO OPALINO, CRI80 IK08, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259576625", "description": "NEW ECOLUX LED HERMÉTICO 18W 2700LM 6000K IP65 590x72x61mm, POLICARBONATO OPALINO, CRI80 IK08, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259574825", "description": "NEW ECOLUX LED HERMÉTICO 36W 5400LM 4000K IP65 1180x72x61mm, POLICARBONATO OPALINO, CRI80 IK08, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259575025", "description": "NEW ECOLUX LED HERMÉTICO 36W 5400LM 6000K IP65 1180x72x61mm, POLICARBONATO OPALINO, CRI80 IK08, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259575225", "description": "NEW ECOLUX LED HERMÉTICO 58W 8700LM 6000K IP65 1480x72x61mm, POLICARBONATO OPALINO, CRI80 IK08, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259575425", "description": "NEW ECOLUX LED HERMÉTICO 58W 8700LM 4000K IP65 1480x72x61mm, POLICARBONATO OPALINO, CRI80 IK08, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259575625", "description": "NEW ECOLUX LED HERMÉTICO 36W 5400LM 4000K IP65 1180x72x61mm CON EMERGENCIA, POLICARBONATO, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "2259575825", "description": "NEW ECOLUX LED HERMÉTICO 36W 5400LM 6000K IP65 1180x72x61mm CON EMERGENCIA, POLICARBONATO, 50.000 HRS", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
-{"code": "259673425", "description": "ECOLUX VALUE HERMÉTICO CON 2 TUBOS LED 6000K IP65 1265x115x86mm, 2x18W 1800LM, REEMPLAZA 2X36W", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1SyY0DwtzrUkc3V2YufDfswmGqzS7ts7I/view", "k": "NEW_ECOLUX"},
-{"code": "259673325", "description": "ECOLUX VALUE HERMÉTICO CON 2 TUBOS LED 4000K IP65 1265x115x86mm, 2x18W 1800LM, REEMPLAZA 2X36W", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1SyY0DwtzrUkc3V2YufDfswmGqzS7ts7I/view", "k": "NEW_ECOLUX"},
-{"code": "278626225", "description": "EQUIPO HERMÉTICO ECOLUX LED INTEGRADO 50W 5000LM 6000K IP65 1480x86x62mm, POLICARBONATO, CRI80 IK08", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1G59YpxvRjMguHgJrYjCCGP8s5it-bCSH/view", "k": "NEW_ECOLUX"},
-{"code": "278626425", "description": "EQUIPO HERMÉTICO ECOLUX LED INTEGRADO 40W 4000LM 6000K IP65 1180x86x66mm, POLICARBONATO, CRI80 IK08", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1G59YpxvRjMguHgJrYjCCGP8s5it-bCSH/view", "k": "NEW_ECOLUX"},
+{"code": "278300325", "description": "FAROL BOLLARD AL 12W 3000K IP65 IK08 GR", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1ueI3bP5Zya7QcjvPFAomWI6tQsDh9d4j/view", "k": "FAROL_BOLLARD"},
+{"code": "278300525", "description": "FAROL BOLLARD AL 12W 4000K IP65 IK08 GR", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1ueI3bP5Zya7QcjvPFAomWI6tQsDh9d4j/view", "k": "FAROL_BOLLARD"},
+{"code": "1278711625", "description": "BOLARDO LED SOLAR 3W 4K 200LM IP65 H600", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/10pmtQVvDQxwC-ItgV6f1nnqyOCOi7bWv/view", "k": "FAROL_BOLLARD"},
+{"code": "1278712025", "description": "BOLARDO LED SOLAR 3W 3K 200LM IP65 H600", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/10pmtQVvDQxwC-ItgV6f1nnqyOCOi7bWv/view", "k": "FAROL_BOLLARD"},
+{"code": "1278711425", "description": "APLIQ LED SOLAR 3W 4K 200LM IP65 NEGRO", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1HpNQj_K2zVrSc3X-eMUv6CJDzaPb8HiB/view", "k": "FAROL_BOLLARD"},
+{"code": "1278711825", "description": "APLIQ LED SOLAR 3W 3K 200LM IP65 NEGRO", "section": "LUMINARIAS DE JARDÍN", "ficha": "https://drive.google.com/file/d/1HpNQj_K2zVrSc3X-eMUv6CJDzaPb8HiB/view", "k": "FAROL_BOLLARD"},
+{"code": "1278618225", "description": "REFL IND LED 100W 4K 14000LM A°60/90/120", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
+{"code": "1278615825", "description": "REFL IND LED 150W 4K 21000LM A°60/90/120", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
+{"code": "1278618025", "description": "REFL IND LED 200W 4K 28000LM A°60/90/120", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
+{"code": "1278615625", "description": "REFL IND LED 100W 6K 14000LM A°60/90/120", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
+{"code": "1278615225", "description": "REFL IND LED 150W 6K 21000LM A°60/90/120", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
+{"code": "1278615425", "description": "REFL IND LED 200W 6K 28000LM A°60/90/120", "section": "REFLECTORES LED", "ficha": "https://drive.google.com/file/d/12HXNx1Kae4KzpAlBWSeLKHLTP-yISwy6/view", "k": "SUNSET"},
+{"code": "2259576425", "description": "EQ HERMET LED 18W 4K IP65 150LM/W 600mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259576625", "description": "EQ HERMET LED 18W 6K IP65 150LM/W 600mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259574825", "description": "EQ HERMET LED 36W 4K IP65 150LM/W 1200mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259575025", "description": "EQ HERMET LED 36W 6K IP65 150LM/W 1200mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259575225", "description": "EQ HERMET LED 58W 6K IP65 150LM/W 1500mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259575425", "description": "EQ HERMET LED 58W 4K IP65 150LM/W 1500mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259575625", "description": "EQ HERMET LED 36W 4K IP65 EMERG 1200mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "2259575825", "description": "EQ HERMET LED 36W 6K IP65 EMERG 1200mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1lKKj-couEQdI0KTuaf2cwTHr3gO_ArdQ/view", "k": "NEW_ECOLUX"},
+{"code": "259673425", "description": "EQ HERMETICO VALUE +2 TUBOS LED 18W/6K", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1SyY0DwtzrUkc3V2YufDfswmGqzS7ts7I/view", "k": "NEW_ECOLUX"},
+{"code": "259673325", "description": "EQ HERMETICO VALUE +2 TUBOS LED 18W/4K", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1SyY0DwtzrUkc3V2YufDfswmGqzS7ts7I/view", "k": "NEW_ECOLUX"},
+{"code": "278626225", "description": "EQ HERMET LED 50W 6K IP65 5000LM 1500mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1G59YpxvRjMguHgJrYjCCGP8s5it-bCSH/view", "k": "NEW_ECOLUX"},
+{"code": "278626425", "description": "EQ HERMET LED 40W 6K IP65 4000LM 1200mm", "section": "HERMÉTICOS", "ficha": "https://drive.google.com/file/d/1G59YpxvRjMguHgJrYjCCGP8s5it-bCSH/view", "k": "NEW_ECOLUX"},
 {"code": "", "description": "SPOTY COLGANTE LED GU10, CUERPO ALUMINIO, CABLE COLGANTE, INTERIOR", "section": "LUMINARIAS COLGANTES", "ficha": "https://drive.google.com/file/d/1jJw0VT6mlvQt8yPW34CH7iFFIxtNemVp/view", "k": "SPOTY_COLGANTE"},
 {"code": "", "description": "GYPSY LUMINARIA COLGANTE LED, CUERPO ALUMINIO, DISEÑO DECORATIVO, INTERIOR", "section": "LUMINARIAS COLGANTES", "ficha": "https://drive.google.com/file/d/1naMQvFVfElQT4nHXelmd9ytpqgP6-kiF/view", "k": "SPOTY_COLGANTE"},
 {"code": "", "description": "BAR LUMINARIA COLGANTE LED LINEAL, CUERPO ALUMINIO, INTERIOR", "section": "LUMINARIAS COLGANTES", "ficha": "https://drive.google.com/file/d/17w_IX3Ryykqm7lNDFC2w3VTJ3MCvuIMH/view", "k": "SPOTY_COLGANTE"},
@@ -833,8 +849,8 @@ const P = [
 {"code": "", "description": "GOTA CUADRADO APLIQUE EMBUTIDO A MURO LED, ALUMINIO, IP65, EXTERIOR", "section": "EMBUTIDOS A MURO", "ficha": "https://drive.google.com/file/d/1gOz0W_cASU5c2m0rnI7Alalp5q073MZw/view", "k": "WALLY"},
 {"code": "", "description": "VEIN APLIQUE EMBUTIDO A MURO LED, ALUMINIO, IP65, EXTERIOR", "section": "EMBUTIDOS A MURO", "ficha": "https://drive.google.com/file/d/19iciqCWzwnBsxv29LDabq3GeShHyHhFO/view", "k": "WALLY"},
 {"code": "269612025", "description": "LUMINARIA LINEAL LED LINE OUT PRO 36W 4320LM CCT REGULABLE 1200x50x75mm BLANCO, SOBREPUESTA/COLGANTE, IP40, 30.000 HRS", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1XhtpBhAUZp358VM1P0t-_guA28YkMwhG/view", "k": "REGLETA_269612025"},
-{"code": "269612425", "description": "LUMINARIA LINEAL LED LINE OUT PRO 36W 4320LM CCT REGULABLE 1200x50x75mm GRIS, SOBREPUESTA/COLGANTE, IP40, 30.000 HRS", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1XhtpBhAUZp358VM1P0t-_guA28YkMwhG/view", "k": "LINE_OUT_PRO"},
-{"code": "269612225", "description": "LUMINARIA LINEAL LED LINE OUT PRO 36W 4320LM CCT REGULABLE 1200x50x75mm NEGRO, SOBREPUESTA/COLGANTE, IP40, 30.000 HRS", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1XhtpBhAUZp358VM1P0t-_guA28YkMwhG/view", "k": "LINE_OUT_PRO"},
+{"code": "269612425", "description": "LINEAL SOB/COL LED GR 36W 3-4-6K IP40", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1XhtpBhAUZp358VM1P0t-_guA28YkMwhG/view", "k": "LINE_OUT_PRO"},
+{"code": "269612225", "description": "LINEAL SOB/COL LED NG 36W 3-4-6K IP40", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1XhtpBhAUZp358VM1P0t-_guA28YkMwhG/view", "k": "LINE_OUT_PRO"},
 {"code": "", "description": "LUMINARIA LINEAL LED LINE OUT PRO EMERGENCIA 36W CCT REGULABLE 1200mm, MÓDULO EMERGENCIA, IP40", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1LwoLYa90YL7SBKOMEeGw__UBWR_Sp5-Q/view", "k": "LINE_OUT_PRO"},
 {"code": "", "description": "LINEAL EMBUTIDO LINE-IN LED, ALUMINIO+PC, IP40, EMBUTIDO EN CIELO, INTERIOR", "section": "LINEALES", "ficha": "https://drive.google.com/file/d/1KqIcA4-zD0XV2H9mry42mMJckKqBRgCb/view", "k": "LINE_OUT_PRO"},
 {"code": "", "description": "PROYECTOR TITÁN LED INDUSTRIAL, ALUMINIO, IP65, ALTA EFICIENCIA, EXTERIOR", "section": "PROYECTORES LED", "ficha": "https://drive.google.com/file/d/1aVql9_ycUvIC9sf9fB97hDrkiRRwndrA/view", "k": "TITAN_LED"},
@@ -845,33 +861,33 @@ const P = [
 {"code": "", "description": "FLOOD SOLAR PORTÁTIL PROYECTOR LED SOLAR PORTÁTIL RECARGABLE, IP65, EXTERIOR", "section": "PROYECTORES LED", "ficha": "https://drive.google.com/file/d/1eQQhc4kGY1QZDjxirZFAw6HR8Io0-6sU/view", "k": "TITAN_LED"},
 {"code": "", "description": "SEVILLA PROYECTOR LED EXTERIOR, ALUMINIO, IP65, ALTA EFICIENCIA", "section": "PROYECTORES LED", "ficha": "https://drive.google.com/file/d/1zCoFH-FwQHAPgh0SpZKIDU_OTrBKkavB/view", "k": "TITAN_LED"},
 {"code": "", "description": "TRÍPODE PROYECTOR LED CON TRÍPODE PORTÁTIL, ALUMINIO, IP65, EXTERIOR", "section": "PROYECTORES LED", "ficha": "https://drive.google.com/file/d/1W-x5kq81hfCcl4Hlj1jImVoV_dmAvWvU/view", "k": "TITAN_LED"},
-{"code": "1278616625", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 12W 960LM CCT Ø170x32mm BLANCO, ALUMINIO, IP40, 30.000 HRS, SIN EMERGENCIA", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278616725", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 12W 960LM CCT Ø170x32mm NEGRO, ALUMINIO, IP40, 30.000 HRS, SIN EMERGENCIA", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278616825", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 12W 960LM CCT Ø170x32mm BLANCO, ALUMINIO, IP40, EMERGENCIA 3 HRS", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278616925", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 12W 960LM CCT Ø170x32mm NEGRO, ALUMINIO, IP40, EMERGENCIA 3 HRS", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278617025", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 18W 1440LM CCT Ø225x32mm BLANCO, ALUMINIO, IP40, 30.000 HRS, SIN EMERGENCIA", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278617125", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 18W 1440LM CCT Ø225x32mm NEGRO, ALUMINIO, IP40, 30.000 HRS, SIN EMERGENCIA", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278617225", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 18W 1440LM CCT Ø225x32mm BLANCO, ALUMINIO, IP40, EMERGENCIA 2 HRS", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278617325", "description": "LUMINARIA PLATÓN PRO LED SOBREPUESTA REDONDA 18W 1440LM CCT Ø225x32mm NEGRO, ALUMINIO, IP40, EMERGENCIA 2 HRS", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
-{"code": "1278621425", "description": "SPY FOCO LED SOBREPUESTO ORIENTABLE GU10 GRAFITO IP54, ALUMINIO, 170x63mm (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1h6BmJxv2FBXgHW3D1X5fUE_s-rLa-Xz0/view", "k": "SPY"},
-{"code": "1278621625", "description": "SPY FOCO LED SOBREPUESTO ORIENTABLE GU10 BLANCO IP54, ALUMINIO, 170x73mm (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1h6BmJxv2FBXgHW3D1X5fUE_s-rLa-Xz0/view", "k": "SPY"},
-{"code": "1278716325", "description": "SPOTY FOCO LED SOBREPUESTO 1xGU10 BLANCO, ALUMINIO+HIERRO, 200x60x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278716425", "description": "SPOTY FOCO LED SOBREPUESTO 1xGU10 NEGRO, ALUMINIO+HIERRO, 200x60x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278716625", "description": "SPOTY FOCO LED SOBREPUESTO 2xGU10 BLANCO, ALUMINIO+HIERRO, 220x60x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278716825", "description": "SPOTY FOCO LED SOBREPUESTO 2xGU10 NEGRO, ALUMINIO+HIERRO, 220x60x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278717025", "description": "SPOTY FOCO LED SOBREPUESTO 3xGU10 BLANCO, ALUMINIO+HIERRO, 220x60x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278717225", "description": "SPOTY FOCO LED SOBREPUESTO 3xGU10 NEGRO, ALUMINIO+HIERRO, 220x60x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278717425", "description": "SPOTY FOCO LED SOBREPUESTO 4xGU10 BLANCO, ALUMINIO+HIERRO, 220x220x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
-{"code": "1278717625", "description": "SPOTY FOCO LED SOBREPUESTO 4xGU10 NEGRO, ALUMINIO+HIERRO, 220x220x16mm, IP20 (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278616625", "description": "FOCO LED S/P 12W 3/4/6K BLANCO IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278616725", "description": "FOCO LED S/P 12W 3/4/6K NEGRO IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278616825", "description": "FOCO LED S/P 12W 3/4/6K BCO IP40+ EMERG", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278616925", "description": "FOCO LED S/P 12W 3/4/6K NGRO IP40+ EMERG", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278617025", "description": "FOCO LED S/P 18W 3/4/6K BLANCO IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278617125", "description": "FOCO LED S/P 18W 3/4/6K NEGRO IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278617225", "description": "FOCO LED S/P 18W 3/4/6K BCO IP40 +EMER", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278617325", "description": "FOCO LED S/P 18W 3/4/6K NGRO IP40+EMER", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1o4ypcef1mL3WpPIur9bmIh5vB0YG0o05/view", "k": "PLATON_PRO"},
+{"code": "1278621425", "description": "FOCO ORIENTABLE IP54 1X GU-10 GRAFITO", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1h6BmJxv2FBXgHW3D1X5fUE_s-rLa-Xz0/view", "k": "SPY"},
+{"code": "1278621625", "description": "FOCO ORIENTABLE IP54 1X GU-10 BLANCO", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1h6BmJxv2FBXgHW3D1X5fUE_s-rLa-Xz0/view", "k": "SPY"},
+{"code": "1278716325", "description": "FOCO SOBREPUESTO 1X GU10 IP20 BLANCO", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278716425", "description": "FOCO SOBREPUESTO 1X GU10 IP20 NEGRO", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278716625", "description": "FOCO SOBREPUESTO ORIENT 2XGU10 IP20 BL", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278716825", "description": "FOCO SOBREPUESTO ORIENT 2XGU10 IP20 NG", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278717025", "description": "FOCO SOBREPUESTO ORIENT 3XGU10 IP20 BL", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278717225", "description": "FOCO SOBREPUESTO ORIENT 3XGU10 IP20 NG", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278717425", "description": "FOCO SOBREPUESTO ORIENT 4XGU10 IP20 BL", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
+{"code": "1278717625", "description": "FOCO SOBREPUESTO ORIENT 4XGU10 IP20 NG", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1g1IErIciL2rUr5INTtgJKBm_YAEawQI6/view", "k": "SPY"},
 {"code": "", "description": "CABINET LUMINARIA LED SOBREPUESTA, ALUMINIO, INTERIOR DECORATIVO", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/16MvVQ37i9Phos5q4Lf6M_e65PcxiFzXD/view", "k": "SPY"},
-{"code": "278609025", "description": "PIPE FOCO LED SOBREPUESTO ORIENTABLE GU10 BLANCO IP20 CRI80, ALUMINIO, 60x160mm (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1Izf5tSpKkKa3W0DcGJWbFKnQc9Jsidnm/view", "k": "SPY"},
-{"code": "278609225", "description": "PIPE FOCO LED SOBREPUESTO ORIENTABLE GU10 NEGRO IP20 CRI80, ALUMINIO, 60x160mm (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1Izf5tSpKkKa3W0DcGJWbFKnQc9Jsidnm/view", "k": "SPY"},
-{"code": "278609425", "description": "PIPE FOCO LED SOBREPUESTO ORIENTABLE GU10 PLATA IP20 CRI80, ALUMINIO, 60x160mm (LÁMPARA NO INCLUIDA)", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1Izf5tSpKkKa3W0DcGJWbFKnQc9Jsidnm/view", "k": "SPY"},
-{"code": "278607125", "description": "TWINS FOCO LED SOBREPUESTO ORIENTABLE DOBLE 2x11W CRI90 IP20, ALUMINIO, 300x75x97mm, BLANCO/ANILLO NEGRO", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1qvDALWkOyD7Z1SriEqUcUootbi-wPvdl/view", "k": "SPY"},
-{"code": "278625825", "description": "WHEEL FOCO LED SOBREPUESTO 18W 1600LM CCT BLANCO, PLÁSTICO, 220x25mm, IP40 CRI80", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"},
-{"code": "278625925", "description": "WHEEL FOCO LED SOBREPUESTO 18W 1600LM CCT NEGRO, PLÁSTICO, 220x25mm, IP40 CRI80", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"},
-{"code": "278626025", "description": "WHEEL FOCO LED SOBREPUESTO 50W 3600LM CCT BLANCO, PLÁSTICO, 600x25mm, IP40 CRI80", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"},
-{"code": "278626125", "description": "WHEEL FOCO LED SOBREPUESTO 50W 3600LM CCT NEGRO, PLÁSTICO, 600x25mm, IP40 CRI80", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"}
+{"code": "278609025", "description": "FOCO LED S/P ORIENTABLE GU10 7W BCO IP20", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1Izf5tSpKkKa3W0DcGJWbFKnQc9Jsidnm/view", "k": "SPY"},
+{"code": "278609225", "description": "FOCO LED S/P ORIENTABLE GU10 7W NG IP20", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1Izf5tSpKkKa3W0DcGJWbFKnQc9Jsidnm/view", "k": "SPY"},
+{"code": "278609425", "description": "FOCO LED S/P ORIENT GU10 PLATA IP20", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1Izf5tSpKkKa3W0DcGJWbFKnQc9Jsidnm/view", "k": "SPY"},
+{"code": "278607125", "description": "FOCO LED S/P 2X11W 3K BLANCO CR90 TWINS", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1qvDALWkOyD7Z1SriEqUcUootbi-wPvdl/view", "k": "SPY"},
+{"code": "278625825", "description": "FOCO LED S/P 18W CCT 3-4-6K 1600LM IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"},
+{"code": "278625925", "description": "FOCO LED S/P NG 18W CCT 1600LM IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"},
+{"code": "278626025", "description": "FOCO LED S/P 50W CCT 3600LM IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"},
+{"code": "278626125", "description": "FOCO LED S/P 50W CCT NG 3600LM IP40", "section": "FOCOS SOBREPUESTOS", "ficha": "https://drive.google.com/file/d/1tLdFT0xduG03EzjDaK7Fgtvb8WvTMdyU/view", "k": "SPY"}
 ];
 
 
@@ -1332,6 +1348,13 @@ function doSearch() {
         setup: null
       },
       {
+        icon: '🔄',
+        title: 'Limpiar búsqueda',
+        desc: 'El logo Darlux y el botón "Todos" limpian la búsqueda y te devuelven al inicio. Útil para comenzar una nueva consulta rápidamente.',
+        target: '.logo-box',
+        setup: null
+      },
+      {
         icon: '🏷️',
         title: 'Filtrar por categoría',
         desc: 'Haz clic en cualquier categoría para ver solo los productos de esa sección del catálogo.',
@@ -1364,6 +1387,13 @@ function doSearch() {
         title: 'Modo claro / oscuro',
         desc: 'Cambia entre modo claro y oscuro según tu preferencia. Tu elección se recuerda automáticamente la próxima vez.',
         target: '#dark-toggle',
+        setup: null
+      },
+      {
+        icon: '📬',
+        title: 'Buzón de sugerencias',
+        desc: '¿Tienes una idea, mejora o consulta? Usa el botón "Sugerencias" para enviarnos un mensaje. ¡Tu opinión es bienvenida!',
+        target: '#sug-btn-header',
         setup: null
       },
     ];
@@ -1424,24 +1454,36 @@ function doSearch() {
       }, 300);
 
     } else if (step.target) {
-      const el = document.querySelector(step.target);
-      if (el) {
-        el.scrollIntoView({behavior:'smooth', block:'center'});
-        el.classList.add('tut-highlight');
-        tutHighlighted = el;
-        setTimeout(() => placeBox(el), 400);
-      }
+      setTimeout(() => {
+        const el = document.querySelector(step.target);
+        if (el) {
+          el.scrollIntoView({behavior:'smooth', block:'center'});
+          el.classList.add('tut-highlight');
+          tutHighlighted = el;
+          setTimeout(() => placeBox(el), 500);
+        }
+      }, 300);
     }
   }
 
   function placeBox(el) {
     const rect = el.getBoundingClientRect();
     const box = document.getElementById('tutorial-box');
+    const spot = document.getElementById('tut-spotlight');
     const bW = box.offsetWidth || 320;
     const bH = box.offsetHeight || 230;
     const vW = window.innerWidth;
     const vH = window.innerHeight;
+    const pad = 6;
 
+    // Posicionar spotlight sobre el elemento
+    spot.style.display = 'block';
+    spot.style.top = (rect.top - pad) + 'px';
+    spot.style.left = (rect.left - pad) + 'px';
+    spot.style.width = (rect.width + pad*2) + 'px';
+    spot.style.height = (rect.height + pad*2) + 'px';
+
+    // Posicionar box debajo o arriba del elemento
     let top = rect.bottom + 14;
     let left = rect.left + rect.width/2 - bW/2;
 
@@ -1457,7 +1499,7 @@ function doSearch() {
 
   function nextStep() {
     tutStep++;
-    if (tutStep >= 6) {
+    if (tutStep >= 8) {
       endTutorial();
       // Limpiar búsqueda al terminar
       document.getElementById('q').value = '';
@@ -1471,6 +1513,7 @@ function doSearch() {
   function endTutorial() {
     document.getElementById('tutorial-overlay').classList.remove('active');
     document.getElementById('tutorial-box').style.display = 'none';
+    document.getElementById('tut-spotlight').style.display = 'none';
     document.body.classList.remove('tut-no-scroll');
     if (tutHighlighted) {
       tutHighlighted.classList.remove('tut-highlight');
